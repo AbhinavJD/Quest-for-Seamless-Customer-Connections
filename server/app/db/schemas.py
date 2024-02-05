@@ -22,6 +22,14 @@ class LoginUserScehma(BaseModel):
     class Config:
         orm_mode = True
 
+class ForgotPasswordUserScehma(BaseModel):
+
+    email: str
+    password: str
+
+    class Config:
+        orm_mode = True
+
 class Response(GenericModel, Generic[T]):
     code: str
     status: str

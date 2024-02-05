@@ -9,7 +9,7 @@ export default function Forgot(props) {
   const navigate = useNavigate();
   const [forgotForm, setForgotForm] = useState({
     email: "",
-    new_password: "",
+    password: "",
   });
   const [isFormValid, setIsFormValid] = useState(false);
   const onChangeForm = (label, event) => {
@@ -24,9 +24,7 @@ export default function Forgot(props) {
     setIsFormValid((prevIsValid) => {
       const updatedIsValidForm =
         (label === "email" ? value !== "" : setForgotForm.email !== "") &&
-        (label === "new_password"
-          ? value !== ""
-          : setForgotForm.new_password !== "");
+        (label === "password" ? value !== "" : setForgotForm.password !== "");
 
       return updatedIsValidForm;
     });
@@ -86,10 +84,10 @@ export default function Forgot(props) {
             type="password"
             placeholder="New Password"
             className={`block text-sm py-3 px-4 rounded-lg w-full border outline-none focus:ring focus:outline-none focus:ring-sky-400 ${
-              forgotForm.new_password === "" ? "border-red-500" : ""
+              forgotForm.password === "" ? "border-red-500" : ""
             }`}
             onChange={(event) => {
-              onChangeForm("new_password", event);
+              onChangeForm("password", event);
             }}
           />
         </div>
