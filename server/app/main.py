@@ -4,8 +4,8 @@ from fastapi import Depends
 from fastapi.middleware.cors import CORSMiddleware
 from app.db.database import SessionLocal, engine
 from app.db import models
-from app.db.schemas import CreateUserScehma, LoginUserScehma, Response
-from app.controller import create_user, login_user
+from app.db.schemas import CreateUserScehma, LoginUserScehma, ForgotPasswordUserScehma, Response
+from app.controller import create_user, login_user, forgot_password
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -59,3 +59,18 @@ async def register_user(create_user_details: CreateUserScehma, db = Depends(db))
         return Response(code="422",
                         status="ok",
                         message="user already exists!").dict(exclude_none=True)
+
+@app.post("/forgot")
+async def login(forgot_cred: ForgotPasswordUserScehma, db = Depends(db)):
+    data = forgot_password.encode_params_data(forgot_cred)
+    is_password_updated = forgot_password.forgot_user_password(db, login_data=data)
+    if is_password_updated:
+
+        return Response(code="200",
+                        status="ok",
+                        message="Password Updated Successfully, Please wait redirecting!",
+                       ).dict(exclude_none=True)
+    else:
+        return Response(code="422",
+                        status="ok",
+                        message="User Doesnot Exits, Please Try With Registered Email!").dict(exclude_none=True)
