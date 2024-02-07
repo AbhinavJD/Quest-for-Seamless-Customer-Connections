@@ -1,90 +1,50 @@
 import AsideUsername from "./aside-comps/AsideUsername";
-
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 export default function Home(props) {
-  const userdata = props.userdata;
+  const [userData, setUserData] = useState(null);
+  // Retrieve access token from localStorage
+  const accessToken = localStorage.getItem("quest_auth_token");
+  const accessTokenType = localStorage.getItem("quest_auth_token_type");
+  useEffect(() => {
+    // Make the API call when the component mounts
+    axios
+      .get("http://localhost:80/users", {
+        headers: {
+          Authorization: `${accessTokenType} ${accessToken}`,
+        },
+      })
+      .then((response) => {
+        // Set the user data in the state
+        setUserData(response.data);
+      })
+      .catch((error) => {
+        // Handle any errors
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
   return (
-    <div class="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-gray-50 text-gray-800">
-      <div class="fixed flex flex-col top-0 left-0 w-64 bg-gray-900 h-full shadow-lg">
-        <AsideUsername userdata={userdata} />
-        <div class="overflow-y-auto overflow-x-hidden flex-grow">
-          <ul class="flex flex-col py-6 space-y-1">
-            <li class="px-5">
-              <div class="flex flex-row items-center h-8">
-                <div class="flex font-semibold text-sm text-gray-300 my-4 font-sans uppercase">
+    <div className="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-gray-50 text-gray-800">
+      <div className="fixed flex flex-col top-0 left-0 w-64 bg-gray-900 h-full shadow-lg">
+        {userData ? <AsideUsername userdata={userData} /> : <p>Loading...</p>}
+        <div className="overflow-y-auto overflow-x-hidden flex-grow">
+          <ul className="flex flex-col py-6 space-y-1">
+            <li className="px-5">
+              <div className="flex flex-row items-center h-8">
+                <div className="flex font-semibold text-sm text-gray-300 my-4 font-sans uppercase">
                   Dashboard
                 </div>
               </div>
             </li>
+
             <li>
               <a
                 href="#"
-                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-700 text-gray-500 hover:text-gray-200 border-l-4 border-transparent hover:border-blue-500 pr-6"
+                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-700 text-gray-500 hover:text-gray-200 border-l-4 border-transparent hover:border-blue-500 pr-6"
               >
-                <span class="inline-flex justify-center items-center ml-4">
+                <span className="inline-flex justify-center items-center ml-4">
                   <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                    ></path>
-                  </svg>
-                </span>
-                <span class="ml-2 font-semibold text-sm tracking-wide truncate font-sans">
-                  Home
-                </span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-700 text-gray-500 hover:text-gray-200 border-l-4 border-transparent hover:border-blue-500 pr-6"
-              >
-                <span class="inline-flex justify-center items-center ml-4">
-                  <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-                    ></path>
-                  </svg>
-                </span>
-                <span class="ml-2 font-semibold text-sm tracking-wide truncate font-sans">
-                  Inbox
-                </span>
-                <span class="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-blue-500 bg-blue-100 rounded-full">
-                  New
-                </span>
-              </a>
-            </li>
-            <li class="px-5">
-              <div class="flex flex-row items-center h-8">
-                <div class="flex font-semibold text-sm text-gray-300 my-4 font-sans uppercase">
-                  Settings
-                </div>
-              </div>
-            </li>
-            <li>
-              <a
-                href="#"
-                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-700 text-gray-500 hover:text-gray-200 border-l-4 border-transparent hover:border-blue-500 pr-6"
-              >
-                <span class="inline-flex justify-center items-center ml-4">
-                  <svg
-                    class="w-5 h-5"
+                    className="w-5 h-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -98,7 +58,7 @@ export default function Home(props) {
                     ></path>
                   </svg>
                 </span>
-                <span class="ml-2 font-semibold text-sm tracking-wide truncate font-sans">
+                <span className="ml-2 font-semibold text-sm tracking-wide truncate font-sans">
                   Profile
                 </span>
               </a>
@@ -106,11 +66,11 @@ export default function Home(props) {
             <li>
               <a
                 href="#"
-                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-700 text-gray-500 hover:text-gray-200 border-l-4 border-transparent hover:border-blue-500 pr-6"
+                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-700 text-gray-500 hover:text-gray-200 border-l-4 border-transparent hover:border-blue-500 pr-6"
               >
-                <span class="inline-flex justify-center items-center ml-4">
+                <span className="inline-flex justify-center items-center ml-4">
                   <svg
-                    class="w-5 h-5"
+                    className="w-5 h-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -130,7 +90,7 @@ export default function Home(props) {
                     ></path>
                   </svg>
                 </span>
-                <span class="ml-2 font-semibold text-sm tracking-wide truncate font-sans">
+                <span className="ml-2 font-semibold text-sm tracking-wide truncate font-sans">
                   Settings
                 </span>
               </a>
@@ -138,11 +98,11 @@ export default function Home(props) {
             <li>
               <a
                 href="#"
-                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-700 text-gray-500 hover:text-gray-200 border-l-4 border-transparent hover:border-red-500 pr-6"
+                className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-700 text-gray-500 hover:text-gray-200 border-l-4 border-transparent hover:border-red-500 pr-6"
               >
-                <span class="inline-flex justify-center items-center ml-4 text-red-400">
+                <span className="inline-flex justify-center items-center ml-4 text-red-400">
                   <svg
-                    class="w-5 h-5"
+                    className="w-5 h-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -156,7 +116,7 @@ export default function Home(props) {
                     ></path>
                   </svg>
                 </span>
-                <span class="ml-2 font-semibold text-sm tracking-wide truncate font-sans">
+                <span className="ml-2 font-semibold text-sm tracking-wide truncate font-sans">
                   Logout
                 </span>
               </a>
