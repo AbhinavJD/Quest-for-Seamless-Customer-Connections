@@ -1,11 +1,11 @@
 import React from "react";
-
+import avatar from "../images/avatar logo.png";
 export default function AsideUsername(props) {
   const userdata = props.userdata;
   return (
     <div className="flex items-center pl-6 h-20 border-b border-gray-800">
       <img
-        src=""
+        src={avatar}
         alt=""
         className="rounded-full h-10 w-10 flex items-center justify-center mr-3 border-2 border-blue-500"
       />
