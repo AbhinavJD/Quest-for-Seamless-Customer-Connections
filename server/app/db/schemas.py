@@ -7,7 +7,7 @@ T = TypeVar('T')
 
 class CreateUserScehma(BaseModel):
     employee_id: int
-    username: str
+    user_name: str
     email: str
     password: str
 
