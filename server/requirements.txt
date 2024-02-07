@@ -11,3 +11,6 @@ uvicorn==0.11.1
 uvloop==0.14.0
 websockets==8.1
 PyJWT
+python-multipart
+python-jose[cryptography]
+passlib[bcrypt]
