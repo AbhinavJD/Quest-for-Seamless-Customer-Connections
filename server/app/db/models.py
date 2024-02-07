@@ -14,12 +14,6 @@ class User(Base):
     user_name = Column(String(100), default='user')
     is_active = Column(Boolean, default=False)
     password = Column(String, default='password')
-    # hashed_password = Column(String, default='password')
-
-    # @validates('password')
-    # def validate_password_hash(self, key, password):
-    #     # Hash the password using bcrypt before storing it
-    #     return bcrypt.hash(password)
 
 class Token(BaseModel):
     access_token: str

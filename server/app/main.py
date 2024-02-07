@@ -7,9 +7,11 @@ from app.db.database import SessionLocal, engine
 from app.db import models
 from app.db.schemas import CreateUserScehma, LoginUserScehma, ForgotPasswordUserScehma, Response
 from app.controller import create_user, login_user, forgot_password
+from jose import JWTError
+import json
 
 models.Base.metadata.create_all(bind=engine)
-
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 # creating instance for fast api
 app = FastAPI()
 origins = [
@@ -30,7 +32,30 @@ def db():
     finally:
         db.close()
 
+async def get_current_user(token: str = Depends(oauth2_scheme), db=Depends(db)):
+    credential_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                                         detail="Could not validate credentials", headers={"WWW-Authenticate": "Bearer"})
+    try:
+        payload = login_user.decode_token(token)
+        # print("payload----------->", payload)
+        email: str = payload.get("sub")
+        if email is None:
+            raise credential_exception
 
+        token_data = models.TokenData(email=email)
+    except JWTError:
+        raise credential_exception
+
+    user = login_user.get_user(db, email=token_data.email)
+    if user is None:
+        raise credential_exception
+    return user
+
+async def get_current_active_user(user: models.UserInDB = Depends(get_current_user)):
+    if user.is_active:
+        raise HTTPException(status_code=400, detail="Inactive user")
+
+    return user
 
 @app.post("/login", response_model=models.Token)
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db = Depends(db)):
@@ -43,20 +68,6 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db = Depends(d
     access_token = login_user.create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires)
     return {"access_token": access_token, "token_type": "bearer"}
-
-    # data = login_user.encode_params_data(login_cred)
-    # is_login = login_user.login_user(db, login_data=data)
-    # if is_login:
-    #     # create jwt token
-    #     encoded_token = login_user.get_token(data)
-    #     return Response(code="200",
-    #                     status="ok",
-    #                     message="Successfully Logged In, Please wait redirecting!",
-    #                     result= {"token":encoded_token}).dict(exclude_none=True)
-    # else:
-    #     return Response(code="422",
-    #                     status="ok",
-    #                     message="Invalid User ID or Password!").dict(exclude_none=True)
 
 
 @app.post("/create")
@@ -86,3 +97,12 @@ async def login(forgot_cred: ForgotPasswordUserScehma, db = Depends(db)):
         return Response(code="422",
                         status="ok",
                         message="User Doesnot Exits, Please Try With Registered Email!").dict(exclude_none=True)
+
+@app.get("/users")
+async def read_users_me(user: models.User = Depends(get_current_active_user)):
+    user_dict = {
+        "employee_id": user.employee_id,
+        "email": user.email,
+        "user_name": user.user_name,
+    }
+    return user_dict
