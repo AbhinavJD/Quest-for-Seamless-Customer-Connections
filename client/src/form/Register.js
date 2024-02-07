@@ -8,14 +8,14 @@ export default function Register(props) {
   const navigate = useNavigate();
   // Register Form
   const [formRegister, setFormRegister] = useState({
-    username: "",
+    user_name: "",
     email: "",
     employee_id: "",
     password: "",
   });
   const [isFormValid, setIsFormValid] = useState(false);
   const [validationErrors, setValidationErrors] = useState({
-    username: "",
+    user_name: "",
     email: "",
     employee_id: "",
     password: "",
@@ -27,9 +27,9 @@ export default function Register(props) {
     let errorMessage = "";
 
     switch (label) {
-      case "username":
+      case "user_name":
         isValid = value.trim() !== "";
-        errorMessage = isValid ? "" : "Username is mandatory";
+        errorMessage = isValid ? "" : "user_name is mandatory";
         break;
       case "email":
         const emailValidation = /\S+@\S+\.\S+/;
@@ -60,7 +60,6 @@ export default function Register(props) {
   //   Submit handler
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-    console.log(formRegister);
     // Validate one more time before submitting (optional)
     if (!isFormValid) {
       toast.error("Please fill in all fields correctly.");
@@ -70,32 +69,36 @@ export default function Register(props) {
     await axios
       .post("http://localhost:80/create", formRegister)
       .then((response) => {
-        console.log(response);
-        // add successfully notif
-        toast.success(response.data.message);
+        if (response.data.code == "200") {
+          console.log(response);
+          // add successfully notif
+          toast.success(response.data.message);
 
-        // Reset the form after a successful submission
-        setFormRegister({
-          username: "",
-          email: "",
-          employee_id: "",
-          password: "",
-        });
+          // Reset the form after a successful submission
+          setFormRegister({
+            user_name: "",
+            email: "",
+            employee_id: "",
+            password: "",
+          });
 
-        // Clear validation errors
-        setValidationErrors({
-          username: "",
-          email: "",
-          employee_id: "",
-          password: "",
-        });
+          // Clear validation errors
+          setValidationErrors({
+            user_name: "",
+            email: "",
+            employee_id: "",
+            password: "",
+          });
 
-        // move to sign in page
-        navigate("/?login");
-        // reload page
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+          // move to sign in page
+          navigate("/?login");
+          // reload page
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        } else {
+          toast.error("User Already Exists!");
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -116,16 +119,16 @@ export default function Register(props) {
         <div className="space-y-4">
           <input
             type="text"
-            placeholder="Username"
+            placeholder="User Name"
             className={`block text-sm py-3 px-4 rounded-lg w-full border outline-none focus:ring focus:outline-none focus:ring-sky-400 ${
-              validationErrors.username ? "border-red-500" : ""
+              validationErrors.user_name ? "border-red-500" : ""
             }`}
             onChange={(event) => {
-              onChangeForm("username", event);
+              onChangeForm("user_name", event);
             }}
           />
-          {validationErrors.username && (
-            <p className="text-red-500 text-sm">{validationErrors.username}</p>
+          {validationErrors.user_name && (
+            <p className="text-red-500 text-sm">{validationErrors.user_name}</p>
           )}
           <input
             type="email"
