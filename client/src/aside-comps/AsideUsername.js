@@ -1,7 +1,7 @@
 import React from "react";
 import avatar from "../images/avatar logo.png";
 export default function AsideUsername(props) {
-  const userdata = props.userdata;
+  const userLoginData = props.userLoginData;
   return (
     <div className="flex items-center pl-6 h-20 border-b border-gray-800">
       <img
@@ -11,11 +11,11 @@ export default function AsideUsername(props) {
       />
       <div className="ml-1">
         <p className="ml-1 text-md font-medium tracking-wide truncate text-gray-100 font-sans">
-          {userdata?.user_name}
+          {userLoginData?.user_name}
         </p>
         <div className="badge">
           <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-blue-800 bg-blue-100 rounded-full">
-            ID: {userdata?.employee_id}
+            ID: {userLoginData?.employee_id}
           </span>
         </div>
       </div>

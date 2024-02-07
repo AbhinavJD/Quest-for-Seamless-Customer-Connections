@@ -5,7 +5,7 @@ import HomeChatWindow from "./home-chat-window/HomeChatWindow";
 import SideBar from "./side-bar/SideBar";
 export default function Home(props) {
   const navigate = useNavigate();
-  const [userData, setUserData] = useState(null);
+  const [userLoginData, setUserLoginData] = useState(null);
   // Retrieve access token from localStorage
   const accessToken = localStorage.getItem("quest_auth_token");
   const accessTokenType = localStorage.getItem("quest_auth_token_type");
@@ -19,7 +19,7 @@ export default function Home(props) {
       })
       .then((response) => {
         // Set the user data in the state
-        setUserData(response.data);
+        setUserLoginData(response.data);
       })
       .catch((error) => {
         // Handle any errors
@@ -42,7 +42,7 @@ export default function Home(props) {
     <div className="flex">
       <React.Fragment>
         <div className=" bg-slate-800 max-w-xs h-screen overflow-y-auto md:min-w-[15rem]">
-          <SideBar />
+          <SideBar userLoginData={userLoginData} />
         </div>
       </React.Fragment>
       {/* right side bar */}
