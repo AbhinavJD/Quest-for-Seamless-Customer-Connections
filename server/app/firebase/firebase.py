@@ -47,4 +47,17 @@ def get_all_chat_ids(userEmail):
 
     return chat_data
 
+def delete_chat(chatid, userEmail):
+    # Reference to the specific chat document
+    print("chatid-------------------------", chatid)
+    chat_ref = firebase_db.collection("users").document(userEmail).collection("chats").document(chatid)
 
+    # Check if the chat document exists
+    chat_doc = chat_ref.get()
+    if chat_doc.exists:
+        # Delete the chat document
+        chat_ref.delete()
+        return True
+    else:
+        # Chat document not found
+        return False

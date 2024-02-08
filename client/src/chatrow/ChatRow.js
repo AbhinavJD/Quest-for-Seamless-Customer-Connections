@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
+import axios from "axios";
+import { toast } from "react-toastify";
 export default function ChatRow(props) {
+  const navigate = useNavigate();
   const pathName = useLocation().pathname;
   const id = props.id;
   const message = props.message;
@@ -11,6 +14,37 @@ export default function ChatRow(props) {
 
     setActive(pathName.includes(id));
   }, [pathName]);
+
+  const removeChat = async () => {
+    try {
+      // Retrieve access token from localStorage
+      const accessToken = localStorage.getItem("quest_auth_token");
+      const accessTokenType = localStorage.getItem("quest_auth_token_type");
+
+      // Call the delete_chat API endpoint
+      const response = await axios.delete(
+        `http://localhost:80/users/chat/${id}`,
+        {
+          headers: {
+            Authorization: `${accessTokenType} ${accessToken}`,
+          },
+        }
+      );
+
+      // Check the response status code
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        // Call the onChatDeleted function passed down from SideBar component
+        props.onChatDeleted(id);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      // Handle errors here
+      toast.error("An error occurred while deleting the chat.");
+    }
+  };
   return (
     <Link
       to={`/chat/${id}`}
@@ -40,6 +74,7 @@ export default function ChatRow(props) {
         strokeWidth="1.5"
         stroke="currentColor"
         className="w-5 h-5 text-gray-700 hover:text-red-700"
+        onClick={removeChat}
       >
         <path
           strokeLinecap="round"

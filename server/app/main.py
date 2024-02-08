@@ -145,3 +145,19 @@ async def get_user_chat_ids(user: models.User = Depends(get_current_active_user)
         return Response(code="500",
                         status="ok",
                         message="Something Went Wrong!").dict(exclude_none=True)
+
+@app.delete("/users/chat/{chatid}")
+async def get_user_chat_ids(chatid: str, user: models.User = Depends(get_current_active_user)):
+    chat_ids = firebase.delete_chat(chatid, user.email)
+    if chat_ids:
+        return Response(
+            code="200",
+            status="ok",
+            message="Chat deleted successfully"
+        ).dict(exclude_none=True)
+    else:
+        return Response(
+            code="500",
+            status="error",
+            message="Failed to delete chat"
+        ).dict(exclude_none=True)
