@@ -55,7 +55,7 @@ export default function Login(props) {
           );
 
           // move to sign in page
-          navigate("/?home");
+          navigate("/home");
           // reload page
           setTimeout(() => {
             window.location.reload();

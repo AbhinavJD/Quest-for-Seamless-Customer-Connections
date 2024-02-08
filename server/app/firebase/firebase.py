@@ -25,3 +25,15 @@ def add_new_chat(userEmail):
     })
 
     return new_chat_ref.id
+
+def get_all_chat_ids(userEmail):
+    # Reference to the "chats" subcollection for the user
+    chats_ref = firebase_db.collection("users").document(userEmail).collection("chats")
+
+    # Get all documents in the "chats" subcollection
+    chat_docs = chats_ref.stream()
+
+    # Extract chat IDs from the documents
+    chat_ids = [chat.id for chat in chat_docs]
+    print("chat idsssss-------------------------------", chat_ids)
+    return chat_ids

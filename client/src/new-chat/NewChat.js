@@ -4,7 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export default function NewChat() {
+export default function NewChat(props) {
+  let chatIds = props.updateChatIDs;
   const navigate = useNavigate();
   const createNewChat = async (event) => {
     // Retrieve access token from localStorage
@@ -26,6 +27,7 @@ export default function NewChat() {
 
           // move to sign in page
           console.log(response.data);
+          chatIds.push(response.data.result.newChatId);
           navigate(`/chat/${response.data.result.newChatId}`);
           //   // reload page
           //   setTimeout(() => {

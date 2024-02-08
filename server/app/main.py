@@ -132,3 +132,16 @@ async def create_new_chat(user: models.User = Depends(get_current_active_user)):
         return Response(code="500",
                         status="ok",
                         message="Something Went Wrong!").dict(exclude_none=True)
+
+@app.get("/users/allChatID")
+async def get_user_chat_ids(user: models.User = Depends(get_current_active_user)):
+    chat_ids = firebase.get_all_chat_ids(user.email)
+    if chat_ids:
+        return Response(code="200",
+                        status="ok",
+                        message="New Chat Created!",
+                        result={"chatIDs": chat_ids}).dict(exclude_none=True)
+    else:
+        return Response(code="500",
+                        status="ok",
+                        message="Something Went Wrong!").dict(exclude_none=True)
