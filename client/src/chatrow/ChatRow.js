@@ -1,12 +1,21 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 export default function ChatRow(props) {
+  const pathName = useLocation().pathname;
   const id = props.id;
   const message = props.message;
+  const [active, setActive] = useState(false);
+  useEffect(() => {
+    if (!pathName) return;
 
+    setActive(pathName.includes(id));
+  }, [pathName]);
   return (
-    <Link to={`/chat/${id}`} className={`chatRow justify-center`}>
+    <Link
+      to={`/chat/${id}`}
+      className={`chatRow justify-center ${active && "bg-gray-600"}`}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
