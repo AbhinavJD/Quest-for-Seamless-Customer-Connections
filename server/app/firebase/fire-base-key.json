@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "quest-ceadar-chatbot",
+  "private_key_id": "24059b3b721144cd692647e03a873fbd5732cd35",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC/R4OxByKXCbKW\nBmNtIDxJaW9nPSNBwAJsNyZbj5unBy2uB0DyxZquUJZ2mvi+FjOtKqpDVCFn0l3d\n2/HCY7Ahi2Em4IH4rnQKehUQ6jygOe7ECs/gaTrdFgBtaERQABElBP2FL7gR3fev\nWjELgsoNUSjFQTi5f5G+pyKVcpoSYoLLzHn2R/04hWqPVo3Tij7GsRWJNK6tQnXF\n34zQ6M6YfOokOfNOOLyM/P1jNc6vm7wzha5lQA6j+HM2FBPFsWtnZaHX1xxaSvFw\nFVL4QN9XsSUpHEG7I8lwyxoFqqdWGzvvaayC8hOCrJh9hETpdGa72+NIuqIZnXjb\ncYSdunt/AgMBAAECggEACIf9BKlHzqq9D1nrl1NnvPJ56IXei7EvqnnvOQg3rgRw\n8iEasXlEw9+ORm31CC1fUqrjeytGbiYAz8Nejgf6NBTOWXiL83Z8cHcvd1irKY5L\n6ux8hwrKeE/h5v9OhK7sFNWbJRSSxiE7SdPg+h10O5HSGrIlAIkDDBjSPw4kdwtf\n0rCJXi2mvGJVX4NiD0emJ6wpNOYHmEN4qcRLrGeFDuM4/Hp2crg8NfndKeBLlvjn\nrPMUqXqlkJyUk5TXQGE6xtAjFCGwdxL1z1Qs0DX6XUmC2MFEaJi8Kguw4QvMy0kX\nT861B1SqSWfo1krEVT6o4mal0cIBoJnEcI7Fjr+cYQKBgQD9/guNqAAyfOVsfGGv\nK+dWxBJr4K9V4HKj8Qc6skRq5nzJatG25BJXNVhJHb2fTF7z+u+BfoLrsfG9Dlee\neI50B+Aa+HDrGrntDkNj8AoxO40c0hFBWg9sMjzkpwFGLTT4L2gDFwZtlIEjjmgI\nDgE4OTYYV37Nmsyjx1ZIEXfl8QKBgQDAypG2NJ4RJSeAfvcvK+jYeu3CWdorfq77\nrKYZIW2F52aFeAhA3YWwuzd6ZyXnz3HMs08uV1dc/TlRKOz+K+ayWvmU3LRZpNxY\n32mzF7vXP/juThmGkMx7IPc5mMGQ4lGsrmaoR5nherhw+aecwfbkf7X52bCKyVAV\nmPLZ+TJIbwKBgE5KRXNnqo/lca5r9IxTQx66l1cLTeBxq8Se4fSUyIQPAb3wIC54\nxLJ+7fSzpyR4HPili7flsCNImVQGHLnrPTXEy65kkCHX/iF0+Q7QCcQ9L/UHR2xW\nf1SBc8WjOMBR5PbvXec97KxQTzIPjj+VWYjkEamVJq/nnFaLdiwGvmdxAoGAdsBP\n4JuogYcRPeT2/OdfFXki2oPeDsyJnBxMc05T2Bcg3zWAX/QTVTj8gzjl8FOnFR+d\ntj22YmDX3VYIJMeF4naHJVqM/GrADz4OLXKBEaUmACO7NVgbm/xCTAf7svK0vFjw\ngtcXwfuFgJFG3RfcrAK+ZJfiVpqJ6cO8UudcQaECgYAPj6Tin/GXbBLmWrj/kLcE\nJXcKhgg+oi2Jm+HpBxWfLCtXREghNXX3ducFK3ts7emIv8+KrU9dm5S3rOZbIwYJ\nXz/iYcCzziMrX/3G+O0vi+6zFHzApqp36n5r4G5Wxv+4xzS+IDnOrVwI3PoAHUef\noW3Qcod32IdCUW1yBM9klg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-9zelw@quest-ceadar-chatbot.iam.gserviceaccount.com",
+  "client_id": "106195092085656247871",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-9zelw%40quest-ceadar-chatbot.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

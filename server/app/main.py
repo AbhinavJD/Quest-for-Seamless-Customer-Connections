@@ -9,6 +9,8 @@ from app.db.schemas import CreateUserScehma, LoginUserScehma, ForgotPasswordUser
 from app.controller import create_user, login_user, forgot_password
 from jose import JWTError
 from fastapi.responses import JSONResponse
+from app.firebase import firebase
+
 
 models.Base.metadata.create_all(bind=engine)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
@@ -116,3 +118,24 @@ async def read_users_me(user: models.User = Depends(get_current_active_user)):
         "user_name": user.user_name,
     }
     return user_dict
+
+
+@app.get("/users/newChat")
+async def create_new_chat(user: models.User = Depends(get_current_active_user)):
+    return firebase.add_new_chat(user.email)
+
+
+
+# FIREBAE SETUP
+
+
+
+# data = {
+#     'chat-1': 'wash the dishes',
+#     'chat-2': 'TODO'
+# }
+
+# doc_ref = db.collection('userCollection').document()
+# doc_ref.set(data)
+
+# print('Document ID:', doc_ref.id)

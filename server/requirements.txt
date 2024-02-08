@@ -14,3 +14,7 @@ PyJWT
 python-multipart
 python-jose[cryptography]
 passlib[bcrypt]
+python-firebase
+requests==2.18.0
+firebase-admin>=4.0.0
+grpcio
