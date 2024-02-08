@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import HomeChatWindow from "./home-chat-window/HomeChatWindow";
 import SideBar from "./side-bar/SideBar";
+import { Route, Routes } from "react-router-dom";
+import Chats from "./chats/Chats";
 export default function Home(props) {
   const navigate = useNavigate();
   const [userLoginData, setUserLoginData] = useState(null);
@@ -48,7 +50,10 @@ export default function Home(props) {
       {/* right side bar */}
       <React.Fragment>
         <div className="flex-1 bg-slate-600">
-          <HomeChatWindow />
+          <Routes>
+            <Route path="/home" element={<HomeChatWindow />}></Route>
+            <Route path="/chat/:chatID" element={<Chats />} />
+          </Routes>
         </div>
       </React.Fragment>
     </div>

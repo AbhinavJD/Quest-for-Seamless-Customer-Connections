@@ -26,11 +26,11 @@ export default function NewChat() {
 
           // move to sign in page
           console.log(response.data);
-          navigate(`/?chat/${response.data.result.newChatId}`);
-          // reload page
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
+          navigate(`/chat/${response.data.result.newChatId}`);
+          //   // reload page
+          //   setTimeout(() => {
+          //     window.location.reload();
+          //   }, 1000);
         } else {
           toast.success("Something went wrong!");
         }
