@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 export default function Login(props) {
   const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState({
-    email: "",
+    username: "",
     password: "",
   });
 
@@ -24,7 +24,7 @@ export default function Login(props) {
     // Use the updated state directly
     setIsFormValid((prevIsValid) => {
       const updatedIsValidForm =
-        (label === "email" ? value !== "" : loginForm.email !== "") &&
+        (label === "username" ? value !== "" : loginForm.username !== "") &&
         (label === "password" ? value !== "" : loginForm.password !== "");
 
       return updatedIsValidForm;
@@ -34,8 +34,11 @@ export default function Login(props) {
   const onSubmitHandler = async (event) => {
     event.preventDefault();
     // call api login
+    const form_data = new FormData();
+    form_data.append("username", loginForm.username);
+    form_data.append("password", loginForm.password);
     await axios
-      .post("http://localhost:80/login", loginForm)
+      .post("http://localhost:80/login", form_data)
       .then((response) => {
         if (response.data.code !== "200") {
           toast.error(response.data.message);
@@ -44,7 +47,11 @@ export default function Login(props) {
           // saving token to local storage
           localStorage.setItem(
             "quest_auth_token",
-            response.data.result["token"]
+            response.data["access_token"]
+          );
+          localStorage.setItem(
+            "quest_auth_token_type",
+            response.data["token_type"]
           );
 
           // move to sign in page
@@ -81,7 +88,7 @@ export default function Login(props) {
             placeholder="Email"
             className="block text-sm py-3 px-4 rounded-lg w-full border outline-none focus:ring focus:outline-none focus:ring-sky-400"
             onChange={(event) => {
-              onChangeForm("email", event);
+              onChangeForm("username", event);
             }}
           />
           <input

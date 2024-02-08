@@ -8,7 +8,9 @@ from app.db import models
 from app.db.schemas import CreateUserScehma, LoginUserScehma, ForgotPasswordUserScehma, Response
 from app.controller import create_user, login_user, forgot_password
 from jose import JWTError
-import json
+from fastapi.responses import JSONResponse
+from app.firebase import firebase
+
 
 models.Base.metadata.create_all(bind=engine)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
@@ -67,7 +69,17 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db = Depends(d
     access_token_expires = login_user.get_token_time()
     access_token = login_user.create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires)
-    return {"access_token": access_token, "token_type": "bearer"}
+    token_type = "bearer"  # You can define the token type as needed
+
+    response_content = {
+        "access_token": access_token,
+        "token_type": token_type,
+        "status": "ok",
+        "code": "200",
+        "message": "Login Successfull, Please Wait Redirecting!",
+    }
+
+    return JSONResponse(content=response_content)
 
 
 @app.post("/create")
@@ -80,7 +92,7 @@ async def register_user(create_user_details: CreateUserScehma, db = Depends(db))
                         message= "user added successfully!").dict(exclude_none=True)
     else:
         return Response(code="422",
-                        status="ok",
+                        status="failed",
                         message="user already exists!").dict(exclude_none=True)
 
 @app.post("/forgot")
@@ -106,3 +118,17 @@ async def read_users_me(user: models.User = Depends(get_current_active_user)):
         "user_name": user.user_name,
     }
     return user_dict
+
+
+@app.get("/users/newChat")
+async def create_new_chat(user: models.User = Depends(get_current_active_user)):
+    chat_id = firebase.add_new_chat(user.email)
+    if chat_id:
+        return Response(code="200",
+                        status="ok",
+                        message="New Chat Created!",
+                        result={"newChatId": chat_id}).dict(exclude_none=True)
+    else:
+        return Response(code="500",
+                        status="ok",
+                        message="Something Went Wrong!").dict(exclude_none=True)
