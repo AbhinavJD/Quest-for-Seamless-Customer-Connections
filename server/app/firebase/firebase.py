@@ -24,7 +24,10 @@ def add_new_chat(userEmail):
         "messages": ["Geat","what", "this is great stuff"]
     })
 
-    return new_chat_ref.id
+    return {
+            "chatid": new_chat_ref.id,
+            "messages": ['New Chat']
+        }
 
 def get_all_chat_ids(userEmail):
     # Reference to the "chats" subcollection for the user

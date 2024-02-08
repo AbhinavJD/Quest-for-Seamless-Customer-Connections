@@ -28,7 +28,7 @@ export default function NewChat(props) {
           // move to sign in page
           console.log(response.data);
           chatIds.push(response.data.result.newChatId);
-          navigate(`/chat/${response.data.result.newChatId}`);
+          navigate(`/chat/${response.data.result.newChatId.chatid}`);
           //   // reload page
           //   setTimeout(() => {
           //     window.location.reload();
