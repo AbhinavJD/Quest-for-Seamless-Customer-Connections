@@ -1,5 +1,5 @@
 # setting up container
-FROM python:3.7
+FROM python:3.7.1
 RUN python -m pip install --upgrade pip
 
 WORKDIR /usr/src/quest_ceadar

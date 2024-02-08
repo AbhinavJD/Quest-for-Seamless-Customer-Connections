@@ -10,8 +10,7 @@ from app.controller import create_user, login_user, forgot_password
 from jose import JWTError
 from fastapi.responses import JSONResponse
 from app.firebase import firebase
-
-
+from app.openAIAPI import openapi
 models.Base.metadata.create_all(bind=engine)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 # creating instance for fast api
@@ -163,16 +162,22 @@ async def get_user_chat_ids(chatid: str, user: models.User = Depends(get_current
         ).dict(exclude_none=True)
 
 @app.post("/user/prompt")
-async def login(prompt_details: dict,  user: models.User = Depends(get_current_active_user), db = Depends(db)):
+async def save_prompt(prompt_details: dict,  user: models.User = Depends(get_current_active_user), db = Depends(db)):
 
     # save prompt to firestore
     messages = firebase.save_prompt(prompt_details, user)
-    print("messagees-----------------------------", messages)
+
+    # Call the open ai api function to get response from open ai
+    openai_response = await openapi.get_response_from_openai(prompt_details["prompt_text"])
+    # Call the async function and await the result
+
+    print('openai_response--------------------------------', openai_response)
     if messages:
         return Response(
             code="200",
             status="ok",
-            message="Bot Working on it..."
+            message="Bot Working on it...",
+            result = openai_response
         ).dict(exclude_none=True)
     else:
         return Response(

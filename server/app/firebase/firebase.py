@@ -81,6 +81,7 @@ def save_prompt(prompt_details, user):
 
     # Set the message data in the message document
     status = message_ref.set(message_data)
+
     if status:
         return True
     else :
