@@ -1,11 +1,49 @@
-import React, { useState } from "react";
-
+import React, { useState, FormEvent } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 export default function ChatInput(porps) {
   const chatId = porps.chatID;
   const [prompt, setPrompt] = useState("");
+
+  const sendMessage = async (e) => {
+    e.preventDefault();
+
+    if (!prompt) return;
+
+    const input = prompt.trim();
+    setPrompt("");
+    const message = {
+      prompt_text: input,
+      chat_id: chatId,
+    };
+
+    try {
+      const accessToken = localStorage.getItem("quest_auth_token");
+      const accessTokenType = localStorage.getItem("quest_auth_token_type");
+
+      const response = await axios.post(
+        "http://localhost:80/user/prompt",
+        message,
+        {
+          headers: {
+            Authorization: `${accessTokenType} ${accessToken}`,
+          },
+        }
+      );
+
+      if (response.data.code === "200") {
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message || "Something went wrong!");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("An error occurred while sending the message.");
+    }
+  };
   return (
     <div className="bg-gray-700 text-white rounded-lg text-sm m-3">
-      <form className="p-5 space-x-5 flex">
+      <form onSubmit={sendMessage} className="p-5 space-x-5 flex">
         <input
           type="text"
           value={prompt}

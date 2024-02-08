@@ -144,7 +144,7 @@ async def get_user_chat_ids(user: models.User = Depends(get_current_active_user)
     else:
         return Response(code="500",
                         status="ok",
-                        message="Something Went Wrong!").dict(exclude_none=True)
+                        message="No Chat is present!").dict(exclude_none=True)
 
 @app.delete("/users/chat/{chatid}")
 async def get_user_chat_ids(chatid: str, user: models.User = Depends(get_current_active_user)):
@@ -160,4 +160,23 @@ async def get_user_chat_ids(chatid: str, user: models.User = Depends(get_current
             code="500",
             status="error",
             message="Failed to delete chat"
+        ).dict(exclude_none=True)
+
+@app.post("/user/prompt")
+async def login(prompt_details: dict,  user: models.User = Depends(get_current_active_user), db = Depends(db)):
+
+    # save prompt to firestore
+    messages = firebase.save_prompt(prompt_details, user)
+    print("messagees-----------------------------", messages)
+    if messages:
+        return Response(
+            code="200",
+            status="ok",
+            message="Bot Working on it..."
+        ).dict(exclude_none=True)
+    else:
+        return Response(
+            code="500",
+            status="error",
+            message="Something is wrong!"
         ).dict(exclude_none=True)

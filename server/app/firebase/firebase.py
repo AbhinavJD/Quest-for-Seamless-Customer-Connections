@@ -1,6 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials, initialize_app
 from firebase_admin import firestore
+from datetime import datetime
 
 cred = credentials.Certificate(r"app/firebase/fire-base-key.json")
 
@@ -20,8 +21,7 @@ def add_new_chat(userEmail):
     new_chat_ref = chats_ref.document()
     new_chat_ref.set({
         "createdAt": firestore.SERVER_TIMESTAMP,
-        "userID": userEmail,
-        "messages": ["Geat","what", "this is great stuff"]
+        "userID": userEmail
     })
 
     return {
@@ -40,8 +40,7 @@ def get_all_chat_ids(userEmail):
     chat_data = []
     for chat in chat_docs:
         chat_dict = {
-            "chatid": chat.id,
-            "messages": chat.to_dict().get("messages", [])
+            "chatid": chat.id
         }
         chat_data.append(chat_dict)
 
@@ -61,3 +60,30 @@ def delete_chat(chatid, userEmail):
     else:
         # Chat document not found
         return False
+
+def save_prompt(prompt_details, user):
+    # Construct the message object
+    message_data = {
+        "user": {
+            "user_id": user.email,
+            "user_name": user.user_name,
+            "user_avatar": "https://ui-avatars.com/api/?name=" + user.user_name
+        },
+        "createdAt": firestore.SERVER_TIMESTAMP,
+        "prompt_text": prompt_details["prompt_text"]
+    }
+
+    # Specify the path to the chat document
+    chat_ref = firebase_db.collection("users").document(user.email).collection("chats").document(prompt_details["chat_id"])
+
+    # Create a new document in the "messages" subcollection
+    message_ref = chat_ref.collection("messages").document()
+
+    # Set the message data in the message document
+    status = message_ref.set(message_data)
+    if status:
+        return True
+    else :
+        return False
+
+

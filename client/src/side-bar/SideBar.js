@@ -13,18 +13,24 @@ export default function SideBar(props) {
 
   // Function to fetch chat IDs from the server
   const fetchChatIDs = async () => {
-    try {
-      const accessToken = localStorage.getItem("quest_auth_token");
-      const accessTokenType = localStorage.getItem("quest_auth_token_type");
-      const response = await axios.get("http://localhost:80/users/allChatID", {
+    const accessToken = localStorage.getItem("quest_auth_token");
+    const accessTokenType = localStorage.getItem("quest_auth_token_type");
+    await axios
+      .get("http://localhost:80/users/allChatID", {
         headers: {
           Authorization: `${accessTokenType} ${accessToken}`,
         },
+      })
+      .then((response) => {
+        if (response.data.code === "200") {
+          setChatIDs(response.data.result.chatIDs);
+        }
+      })
+      .catch((error) => {
+        // add error notif
+
+        console.log(error);
       });
-      setChatIDs(response.data.result.chatIDs);
-    } catch (error) {
-      toast.error("Something went wrong while fetching chat IDs!");
-    }
   };
 
   // useEffect to fetch chat IDs when the component mounts
@@ -60,7 +66,7 @@ export default function SideBar(props) {
           <ChatRow
             key={chatid.chatid}
             id={chatid.chatid}
-            message={chatid?.messages[0]}
+            message={chatid?.messages?.prompt_text}
             onChatDeleted={handleChatDeleted}
           ></ChatRow>
         ))}
