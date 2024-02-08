@@ -19,3 +19,4 @@ requests==2.20.0
 firebase-admin>=4.0.0
 grpcio
 OpenAI==0.25.0
+python-dotenv

@@ -27,8 +27,16 @@
 #     #     return ""
 import requests
 import json
+import os
 
-API_KEY = "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"
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Access the environment variable
+API_KEY = os.environ.get('openAIKey')
 
 url = 'https://api.openai.com/v1/chat/completions'
 headers = {
