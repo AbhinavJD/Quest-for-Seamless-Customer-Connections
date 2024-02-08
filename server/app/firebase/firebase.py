@@ -21,7 +21,7 @@ def add_new_chat(userEmail):
     new_chat_ref.set({
         "createdAt": firestore.SERVER_TIMESTAMP,
         "userID": userEmail,
-        "messages": []
+        "messages": ["Geat","what", "this is great stuff"]
     })
 
     return new_chat_ref.id
@@ -33,7 +33,15 @@ def get_all_chat_ids(userEmail):
     # Get all documents in the "chats" subcollection
     chat_docs = chats_ref.stream()
 
-    # Extract chat IDs from the documents
-    chat_ids = [chat.id for chat in chat_docs]
-    print("chat idsssss-------------------------------", chat_ids)
-    return chat_ids
+    # Extract chat IDs and messages from the documents
+    chat_data = []
+    for chat in chat_docs:
+        chat_dict = {
+            "chatid": chat.id,
+            "messages": chat.to_dict().get("messages", [])
+        }
+        chat_data.append(chat_dict)
+
+    return chat_data
+
+

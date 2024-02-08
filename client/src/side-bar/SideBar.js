@@ -21,13 +21,13 @@ export default function SideBar(props) {
         },
       })
       .then((response) => {
-        setChatIDs([...response.data.result.chatIDs]);
-        // console.log(response.data.result.chatIDs);
+        setChatIDs(response.data.result.chatIDs);
       })
       .catch((error) => {
         toast.error("Something went wrong!");
       });
   }, []);
+
   return (
     <div className="p-2 flex flex-col h-screen">
       <div className="flex-1">
@@ -41,7 +41,11 @@ export default function SideBar(props) {
         <div>{/* Model selection */}</div>
         {/* Map the chat rows */}
         {chatIDs?.map((chatid) => (
-          <ChatRow key={chatid} id={chatid}></ChatRow>
+          <ChatRow
+            key={chatid.chatid}
+            id={chatid.chatid}
+            message={chatid?.messages[0]}
+          ></ChatRow>
         ))}
       </div>
     </div>
