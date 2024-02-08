@@ -122,20 +122,13 @@ async def read_users_me(user: models.User = Depends(get_current_active_user)):
 
 @app.get("/users/newChat")
 async def create_new_chat(user: models.User = Depends(get_current_active_user)):
-    return firebase.add_new_chat(user.email)
-
-
-
-# FIREBAE SETUP
-
-
-
-# data = {
-#     'chat-1': 'wash the dishes',
-#     'chat-2': 'TODO'
-# }
-
-# doc_ref = db.collection('userCollection').document()
-# doc_ref.set(data)
-
-# print('Document ID:', doc_ref.id)
+    chat_id = firebase.add_new_chat(user.email)
+    if chat_id:
+        return Response(code="200",
+                        status="ok",
+                        message="New Chat Created!",
+                        result={"newChatId": chat_id}).dict(exclude_none=True)
+    else:
+        return Response(code="500",
+                        status="ok",
+                        message="Something Went Wrong!").dict(exclude_none=True)
