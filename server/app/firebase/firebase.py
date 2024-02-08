@@ -61,17 +61,29 @@ def delete_chat(chatid, userEmail):
         # Chat document not found
         return False
 
-def save_prompt(prompt_details, user):
-    # Construct the message object
-    message_data = {
-        "user": {
-            "user_id": user.email,
-            "user_name": user.user_name,
-            "user_avatar": "https://ui-avatars.com/api/?name=" + user.user_name
-        },
-        "createdAt": firestore.SERVER_TIMESTAMP,
-        "prompt_text": prompt_details["prompt_text"]
-    }
+def save_prompt(prompt_details, user, isUser=True):
+    if(isUser):
+        # Construct the message object
+        message_data = {
+            "user": {
+                "user_id": user.email,
+                "user_name": user.user_name,
+                "user_avatar": "https://ui-avatars.com/api/?name=" + user.user_name
+            },
+            "createdAt": firestore.SERVER_TIMESTAMP,
+            "prompt_text": prompt_details["prompt_text"]
+        }
+    else:
+        # Construct the message object
+        message_data = {
+            "user": {
+                "user_id": "Assistant",
+                "user_name": "AI Bot",
+                "user_avatar": "avatar.png"
+            },
+            "createdAt": firestore.SERVER_TIMESTAMP,
+            "prompt_text": prompt_details["prompt_text"]
+        }
 
     # Specify the path to the chat document
     chat_ref = firebase_db.collection("users").document(user.email).collection("chats").document(prompt_details["chat_id"])

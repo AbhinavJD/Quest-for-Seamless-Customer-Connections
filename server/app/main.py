@@ -170,14 +170,16 @@ async def save_prompt(prompt_details: dict,  user: models.User = Depends(get_cur
     # Call the open ai api function to get response from open ai
     openai_response = await openapi.get_response_from_openai(prompt_details["prompt_text"])
     # Call the async function and await the result
-
+    prompt = firebase.save_prompt({
+      "prompt_text": openai_response,
+      "chat_id": prompt_details["chat_id"],
+    }, user)
     print('openai_response--------------------------------', openai_response)
-    if messages:
+    if prompt:
         return Response(
             code="200",
             status="ok",
-            message="Bot Working on it...",
-            result = openai_response
+            message="Bot Working on it..."
         ).dict(exclude_none=True)
     else:
         return Response(
