@@ -13,7 +13,7 @@ export default function ChatRow(props) {
     if (!pathName) return;
 
     setActive(pathName.includes(id));
-  }, [pathName]);
+  }, [pathName, id]);
 
   const removeChat = async () => {
     try {

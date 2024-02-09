@@ -21,6 +21,7 @@ export default function Chats(props) {
           },
         })
         .then((response) => {
+          console.log("Frm Chats Update Messages called");
           if (response.data.code !== "200") {
             toast.error(response.data.message);
           } else if (response.data.code === "200") {
@@ -40,7 +41,7 @@ export default function Chats(props) {
   // useEffect to fetch chat IDs when the component mounts
   useEffect(() => {
     updateMessages();
-  }, []);
+  }, [chatID]);
   return (
     <div className="flex flex-col h-screen">
       {/* {chatsdisplay} */}
