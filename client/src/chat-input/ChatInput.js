@@ -51,7 +51,7 @@ export default function ChatInput(props) {
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevent the default form submission
     sendMessage(event);
-    console.log(userLoginData);
+    // console.log(userLoginData);
     const userMessageData = {
       createdAt: timestamp.toISOString(),
       prompt_text: prompt.trim(),

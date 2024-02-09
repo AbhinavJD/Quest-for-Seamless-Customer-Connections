@@ -14,7 +14,7 @@ export default function Chats(props) {
     try {
       const accessToken = localStorage.getItem("quest_auth_token");
       const accessTokenType = localStorage.getItem("quest_auth_token_type");
-      console.log(messages);
+      // console.log(messages);
       await axios
         .get(`http://localhost:80/user/getMessages/${chatID}`, {
           headers: {
@@ -22,7 +22,7 @@ export default function Chats(props) {
           },
         })
         .then((response) => {
-          console.log("Frm Chats Update Messages called");
+          // console.log("Frm Chats Update Messages called");
           if (response.data.status === "ok") {
             setMessages(response.data.result["messages"]);
           } else {
