@@ -35,7 +35,7 @@ export default function Login(props) {
     event.preventDefault();
     // call api login
     const form_data = new FormData();
-    form_data.append("username", loginForm.username);
+    form_data.append("username", loginForm.username.toLowerCase());
     form_data.append("password", loginForm.password);
     await axios
       .post("http://localhost:80/login", form_data)

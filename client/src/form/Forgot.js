@@ -17,7 +17,7 @@ export default function Forgot(props) {
     event.preventDefault();
     if (email === "" && password === "") return;
     const forgotForm = {
-      email: email.trim(),
+      email: email.trim().toLowerCase(),
       password: password.trim(),
     };
     setEmail("");

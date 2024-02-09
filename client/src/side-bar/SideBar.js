@@ -52,26 +52,28 @@ export default function SideBar(props) {
   };
 
   return (
-    <div className="p-2 flex flex-col h-screen">
-      <div className="flex-1 relative">
-        <div className="col-span-1 justify-between">
+    <div className=" flex flex-col h-screen">
+      <div className="flex-1 relative h-screen">
+        <div className="col-span-1 justify-between p-2">
           <AsideUsername userLoginData={userLoginData} />
         </div>
-        <div>
+        <div className="p-2">
           {/* new chat */}
           <NewChat updateChatIDs={chatIDs}></NewChat>
         </div>
-        <div>{/* Model selection */}</div>
-        {/* Map the chat rows */}
-        {chatIDs?.map((chatid) => (
-          <ChatRow
-            key={chatid.chatid}
-            id={chatid.chatid}
-            message={chatid?.messages?.prompt_text}
-            onChatDeleted={handleChatDeleted}
-          ></ChatRow>
-        ))}
-        <div className="flex justify-center w-full absolute bottom-0 p-5 col-span-1">
+        <div className="p-2 h-3/4 overflow-auto">
+          {/* Map the chat rows */}
+          {chatIDs?.map((chatid) => (
+            <ChatRow
+              key={chatid.chatid}
+              id={chatid.chatid}
+              message={chatid?.messages?.prompt_text}
+              onChatDeleted={handleChatDeleted}
+            ></ChatRow>
+          ))}
+        </div>
+
+        <div className="flex justify-center w-full absolute bottom-0 p-2 col-span-1">
           <LogoutButton></LogoutButton>
         </div>
       </div>
