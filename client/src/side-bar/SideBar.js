@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import ChatRow from "../chatrow/ChatRow";
+import LogoutButton from "../logout/Logout";
 
 export default function SideBar(props) {
   const userLoginData = props.userLoginData;
@@ -52,7 +53,7 @@ export default function SideBar(props) {
 
   return (
     <div className="p-2 flex flex-col h-screen">
-      <div className="flex-1">
+      <div className="flex-1 relative">
         <div className="col-span-1 justify-between">
           <AsideUsername userLoginData={userLoginData} />
         </div>
@@ -70,8 +71,8 @@ export default function SideBar(props) {
             onChatDeleted={handleChatDeleted}
           ></ChatRow>
         ))}
-        <div className="text-white flex justify-end absolute bottom-0 p-5 col-span-1">
-          Logout
+        <div className="flex justify-center w-full absolute bottom-0 p-5 col-span-1">
+          <LogoutButton></LogoutButton>
         </div>
       </div>
     </div>
