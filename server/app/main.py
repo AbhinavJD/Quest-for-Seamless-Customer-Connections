@@ -199,4 +199,5 @@ async def get_user_chat_messages(chatid: str, user: models.User = Depends(get_cu
     else:
         return Response(code="500",
                         status="ok",
-                        message="No Message is available").dict(exclude_none=True)
+                        message="No Message is available",
+                        result={"messages": []}).dict(exclude_none=True)

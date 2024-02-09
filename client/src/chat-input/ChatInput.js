@@ -2,12 +2,13 @@ import React, { useState, FormEvent } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 export default function ChatInput(props) {
+  const timestamp = new Date();
+  const userLoginData = props.userLoginData;
   const chatId = props.chatID;
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
   const sendMessage = async (e) => {
     e.preventDefault();
-
     if (!prompt) return;
 
     const input = prompt.trim();
@@ -47,10 +48,25 @@ export default function ChatInput(props) {
       console.error("Error:", error);
     }
   };
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Prevent the default form submission
+    sendMessage(event);
+    console.log(userLoginData);
+    const userMessageData = {
+      createdAt: timestamp.toISOString(),
+      prompt_text: prompt.trim(),
+      user: {
+        user_id: userLoginData.email,
+        user_avatar: `https://ui-avatars.com/api/?name=${userLoginData.user_name}`,
+        user_name: userLoginData.user_name,
+      },
+    };
+    props.updateFrontEnd(userMessageData);
+  };
   return (
     <div className="bg-gray-700 text-white rounded-lg text-sm m-3">
       {!loading && (
-        <form onSubmit={sendMessage} className="p-5 space-x-5 flex">
+        <form onSubmit={handleSubmit} className="p-5 space-x-5 flex">
           <input
             type="text"
             value={prompt}

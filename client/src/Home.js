@@ -52,7 +52,10 @@ export default function Home(props) {
         <div className="flex-1 bg-slate-600 h-screen">
           <Routes>
             <Route path="/home" element={<HomeChatWindow />}></Route>
-            <Route path="/chat/:chatID" element={<Chats />} />
+            <Route
+              path="/chat/:chatID"
+              element={<Chats userLoginData={userLoginData} />}
+            />
           </Routes>
         </div>
       </React.Fragment>

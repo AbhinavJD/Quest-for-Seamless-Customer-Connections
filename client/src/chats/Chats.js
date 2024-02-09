@@ -7,13 +7,14 @@ import axios from "axios";
 import { toast } from "react-toastify";
 export default function Chats(props) {
   // Get the ID from the URL parameter
+  const userLoginData = props.userLoginData;
   const { chatID } = useParams();
   const [messages, setMessages] = useState([]);
   const updateMessages = async (event) => {
     try {
       const accessToken = localStorage.getItem("quest_auth_token");
       const accessTokenType = localStorage.getItem("quest_auth_token_type");
-
+      console.log(messages);
       await axios
         .get(`http://localhost:80/user/getMessages/${chatID}`, {
           headers: {
@@ -22,9 +23,7 @@ export default function Chats(props) {
         })
         .then((response) => {
           console.log("Frm Chats Update Messages called");
-          if (response.data.code !== "200") {
-            toast.error(response.data.message);
-          } else if (response.data.code === "200") {
+          if (response.data.status === "ok") {
             setMessages(response.data.result["messages"]);
           } else {
             toast.error(response.data.message || "Something went wrong!");
@@ -42,12 +41,22 @@ export default function Chats(props) {
   useEffect(() => {
     updateMessages();
   }, [chatID]);
+  const updateFrontEndMessage = (userMessageObj) => {
+    // Append userMessageObj to the messages array
+    setMessages([...messages, userMessageObj]);
+  };
+
   return (
     <div className="flex flex-col h-screen">
       {/* {chatsdisplay} */}
       <ChatDisplay chatID={chatID} messagesToShow={messages}></ChatDisplay>
       {/* Chatinput */}
-      <ChatInput chatID={chatID} onMessageUpdate={updateMessages}></ChatInput>
+      <ChatInput
+        chatID={chatID}
+        onMessageUpdate={updateMessages}
+        updateFrontEnd={updateFrontEndMessage}
+        userLoginData={userLoginData}
+      ></ChatInput>
     </div>
   );
 }
