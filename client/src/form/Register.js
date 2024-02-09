@@ -6,65 +6,23 @@ import { toast } from "react-toastify";
 
 export default function Register(props) {
   const navigate = useNavigate();
-  // Register Form
-  const [formRegister, setFormRegister] = useState({
-    user_name: "",
-    email: "",
-    employee_id: "",
-    password: "",
-  });
-  const [isFormValid, setIsFormValid] = useState(false);
-  const [validationErrors, setValidationErrors] = useState({
-    user_name: "",
-    email: "",
-    employee_id: "",
-    password: "",
-  });
-  // form on change handler
-  const onChangeForm = (label, event) => {
-    let value = event.target.value;
-    let isValid = true;
-    let errorMessage = "";
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [employeeId, setEmployeeId] = useState("");
+  const [password, setPassword] = useState("");
 
-    switch (label) {
-      case "user_name":
-        isValid = value.trim() !== "";
-        errorMessage = isValid ? "" : "user_name is mandatory";
-        break;
-      case "email":
-        const emailValidation = /\S+@\S+\.\S+/;
-        isValid = emailValidation.test(value) || value === "";
-        errorMessage = isValid ? "" : "Invalid email format";
-        break;
-      case "employee_id":
-        isValid = value.trim() !== "" && !isNaN(value);
-        errorMessage = isValid
-          ? ""
-          : "Employee ID is mandatory and must be a number";
-        break;
-      case "password":
-        isValid = value.trim() !== "";
-        errorMessage = isValid ? "" : "Password is mandatory";
-        break;
-    }
-
-    setValidationErrors({ ...validationErrors, [label]: errorMessage });
-    setFormRegister({ ...formRegister, [label]: value });
-
-    // Check if there are no validation errors
-    const isValidForm = Object.values(formRegister).every(
-      (value) => value !== ""
-    );
-    setIsFormValid(isValidForm);
-  };
   //   Submit handler
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-    // Validate one more time before submitting (optional)
-    if (!isFormValid) {
-      toast.error("Please fill in all fields correctly.");
+    if (email === "" && password === "" && userName === "" && employeeId === "")
       return;
-    }
+    const formRegister = {
+      user_name: userName.toLowerCase(),
+      email: email.toLowerCase(),
+      employee_id: employeeId,
+      password: password,
+    };
+
     // call api login
     await axios
       .post("http://localhost:80/create", formRegister)
@@ -73,29 +31,17 @@ export default function Register(props) {
           console.log(response);
           // add successfully notif
           toast.success(response.data.message);
-
-          // Reset the form after a successful submission
-          setFormRegister({
-            user_name: "",
-            email: "",
-            employee_id: "",
-            password: "",
-          });
-
-          // Clear validation errors
-          setValidationErrors({
-            user_name: "",
-            email: "",
-            employee_id: "",
-            password: "",
-          });
-
           // move to sign in page
-          navigate("/?login");
+          navigate("/login"); // Reset the form after a successful submission
+          setUserName("");
+          setEmail("");
+          setEmployeeId("");
+          setPassword("");
+
           // reload page
           setTimeout(() => {
             window.location.reload();
-          }, 1000);
+          }, 500);
         } else {
           toast.error("User Already Exists!");
         }
@@ -120,67 +66,69 @@ export default function Register(props) {
           <input
             type="text"
             placeholder="User Name"
+            value={userName}
             className={`block text-sm py-3 px-4 rounded-lg w-full border outline-none focus:ring focus:outline-none focus:ring-sky-400 ${
-              validationErrors.user_name ? "border-red-500" : ""
+              userName === "" ? "border-red-500" : ""
             }`}
-            onChange={(event) => {
-              onChangeForm("user_name", event);
-            }}
+            onChange={(e) => setUserName(e.target.value)}
           />
-          {validationErrors.user_name && (
-            <p className="text-red-500 text-sm">{validationErrors.user_name}</p>
+          {userName === "" && (
+            <p className="text-red-500 text-sm">User Name is mandatory!</p>
           )}
           <input
             type="email"
             placeholder="Email"
+            value={email}
             className={`block text-sm py-3 px-4 rounded-lg w-full border outline-none focus:ring focus:outline-none focus:ring-sky-400 ${
-              validationErrors.email ? "border-red-500" : ""
+              email === "" ? "border-red-500" : ""
             }`}
-            onChange={(event) => {
-              onChangeForm("email", event);
-            }}
+            onChange={(e) => setEmail(e.target.value)}
           />
-          {validationErrors.email && (
-            <p className="text-red-500 text-sm">{validationErrors.email}</p>
+          {email === "" && (
+            <p className="text-red-500 text-sm">Email is mandatory!</p>
           )}
           <input
             type="number"
             placeholder="Employee ID"
+            value={employeeId}
             className={`block text-sm py-3 px-4 rounded-lg w-full border outline-none focus:ring focus:outline-none focus:ring-sky-400 ${
-              validationErrors.employee_id ? "border-red-500" : ""
+              employeeId === "" ? "border-red-500" : ""
             }`}
-            onChange={(event) => {
-              onChangeForm("employee_id", event);
-            }}
+            onChange={(e) => setEmployeeId(e.target.value)}
           />
-          {validationErrors.employee_id && (
-            <p className="text-red-500 text-sm">
-              {validationErrors.employee_id}
-            </p>
+          {employeeId === "" && (
+            <p className="text-red-500 text-sm">Employee ID is mandatory!</p>
           )}
           <input
             type="password"
             placeholder="Password"
+            value={password}
             className={`block text-sm py-3 px-4 rounded-lg w-full border outline-none focus:ring focus:outline-none focus:ring-sky-400 ${
-              validationErrors.password ? "border-red-500" : ""
+              password === "" ? "border-red-500" : ""
             }`}
-            onChange={(event) => {
-              onChangeForm("password", event);
-            }}
+            onChange={(e) => setPassword(e.target.value)}
           />
-          {validationErrors.password && (
-            <p className="text-red-500 text-sm">{validationErrors.password}</p>
+          {password === "" && (
+            <p className="text-red-500 text-sm">Password is mandatory!</p>
           )}
         </div>
         <div className="text-center mt-6">
           <button
             type="submit"
             className={`py-3 w-64 text-xl text-white rounded-2xl outline-none ${
-              isFormValid
-                ? "bg-sky-400 hover:bg-sky-300 active:bg-sky-500"
-                : "bg-gray-400 cursor-not-allowed"
+              email.trim() === "" ||
+              userName.trim() === "" ||
+              employeeId.trim() === "" ||
+              password.trim() === ""
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-sky-400 hover:bg-sky-300 active:bg-sky-500"
             }`}
-            disabled={!isFormValid}
+            disabled={
+              email.trim() === "" ||
+              userName.trim() === "" ||
+              employeeId.trim() === "" ||
+              password.trim() === ""
+            }
           >
             Create Account
           </button>
