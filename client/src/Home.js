@@ -49,7 +49,7 @@ export default function Home(props) {
       </React.Fragment>
       {/* right side bar */}
       <React.Fragment>
-        <div className="flex-1 bg-slate-600">
+        <div className="flex-1 bg-slate-600 h-screen">
           <Routes>
             <Route path="/home" element={<HomeChatWindow />}></Route>
             <Route path="/chat/:chatID" element={<Chats />} />

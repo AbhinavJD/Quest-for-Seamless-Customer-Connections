@@ -1,8 +1,8 @@
 import React, { useState, FormEvent } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-export default function ChatInput(porps) {
-  const chatId = porps.chatID;
+export default function ChatInput(props) {
+  const chatId = props.chatID;
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
   const sendMessage = async (e) => {
@@ -28,12 +28,13 @@ export default function ChatInput(porps) {
           },
         })
         .then((response) => {
-          toast.success(response.data.message);
+          //   toast.success(response.data.message);
           setLoading(false);
           if (response.data.code !== "200") {
             toast.error(response.data.message);
           } else if (response.data.code === "200") {
-            console.log("api response", response);
+            // console.log("api response", response);
+            props.onMessageUpdate();
           } else {
             toast.error(response.data.message || "Something went wrong!");
           }

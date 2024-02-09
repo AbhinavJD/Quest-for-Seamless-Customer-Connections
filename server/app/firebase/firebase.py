@@ -100,3 +100,25 @@ def save_prompt(prompt_details, user, isUser=True):
         return False
 
 
+def get_all_chat_messages(user_email, chatid):
+       # Specify the path to the chat document
+    chat_ref = firebase_db.collection("users").document(user_email).collection("chats").document(chatid)
+
+    # Query the "messages" subcollection and order by createdAt in ascending order
+    messages_query = chat_ref.collection("messages").order_by("createdAt", direction="ASCENDING")
+
+    # Get all documents in the subcollection
+    messages = messages_query.get()
+
+    # Initialize an empty list to store the messages
+    chat_messages = []
+
+    # Iterate over the documents and append them to the list
+    for message_doc in messages:
+        # Get the data of the document
+        message_data = message_doc.to_dict()
+        # Append the message data to the list
+        chat_messages.append(message_data)
+
+    # Return the list of messages
+    return chat_messages

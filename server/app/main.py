@@ -173,7 +173,7 @@ async def save_prompt(prompt_details: dict,  user: models.User = Depends(get_cur
     prompt = firebase.save_prompt({
       "prompt_text": openai_response,
       "chat_id": prompt_details["chat_id"],
-    }, user)
+    }, user, isUser=False)
     print('openai_response--------------------------------', openai_response)
     if prompt:
         return Response(
@@ -187,3 +187,16 @@ async def save_prompt(prompt_details: dict,  user: models.User = Depends(get_cur
             status="error",
             message="Something is wrong!"
         ).dict(exclude_none=True)
+
+@app.get("/user/getMessages/{chatid}")
+async def get_user_chat_messages(chatid: str, user: models.User = Depends(get_current_active_user)):
+    messages = firebase.get_all_chat_messages(user.email, chatid)
+    if messages:
+        return Response(code="200",
+                        status="ok",
+                        message="Messages returned!",
+                        result={"messages": messages}).dict(exclude_none=True)
+    else:
+        return Response(code="500",
+                        status="ok",
+                        message="No Message is available").dict(exclude_none=True)
