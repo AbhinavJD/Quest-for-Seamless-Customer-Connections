@@ -70,6 +70,9 @@ export default function SideBar(props) {
             onChatDeleted={handleChatDeleted}
           ></ChatRow>
         ))}
+        <div className="text-white flex justify-end absolute bottom-0 p-5 col-span-1">
+          Logout
+        </div>
       </div>
     </div>
   );
