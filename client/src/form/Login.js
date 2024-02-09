@@ -40,9 +40,7 @@ export default function Login(props) {
     await axios
       .post("http://localhost:80/login", form_data)
       .then((response) => {
-        if (response.data.code !== "200") {
-          toast.error(response.data.message);
-        } else if (response.data.code === "200") {
+        if (response.data?.code === "200") {
           toast.success(response.data.message);
           // saving token to local storage
           localStorage.setItem(
@@ -61,12 +59,13 @@ export default function Login(props) {
             window.location.reload();
           }, 1000);
         } else {
-          toast.success("Something went wrong!");
+          toast.error(response.data.detail);
         }
       })
       .catch((error) => {
         // add error notif
 
+        toast.error("Incorrect Username or Password");
         console.log(error);
       });
   };
