@@ -1,13 +1,14 @@
 FROM node:18-alpine as build_image
 WORKDIR /usr/src/quest_ceadar/client
 
+# Install serve globally
+RUN npm install -g serve
 
-COPY package.json .
+# Copy the built files from the build directory
+COPY ./build .
 
-RUN npm install
-
-COPY . .
-
+# Expose port 3000
 EXPOSE 3000
 
-CMD ["npm", "run", "start"]
+# Run serve to serve the built files
+CMD ["serve", "-s", "build"]
