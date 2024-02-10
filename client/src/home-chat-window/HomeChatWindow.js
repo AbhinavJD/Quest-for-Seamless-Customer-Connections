@@ -2,7 +2,13 @@ import React from "react";
 export default function HomeChatWindow() {
   return (
     <div className="text-white flex flex-col items-center justify-center h-screen px-2 ">
-      <h1 className="text-5xl font-bold mb-20">XYZ Corp. AI Assistant</h1>
+      <h1 className="text-5xl text-center font-bold mb-20">
+        XYZ Corporation <br /> AI Assistant
+      </h1>
+      <h5 className="text-1xl font-normal mb-20 text-center">
+        If you're looking to start a new conversation, click the New Chat
+        button.
+      </h5>
       <div className="flex space-x-2 text-center">
         <div>
           <div className="flex flex-col items-center justify-center mb-5">

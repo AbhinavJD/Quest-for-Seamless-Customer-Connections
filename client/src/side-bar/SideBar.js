@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NewChat from "../new-chat/NewChat";
 import AsideUsername from "../aside-comps/AsideUsername";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import ChatRow from "../chatrow/ChatRow";
@@ -11,6 +11,7 @@ import { USERS_URL } from "../constants";
 export default function SideBar(props) {
   const userLoginData = props.userLoginData;
   const navigate = useNavigate();
+  const location = useLocation();
   const [chatIDs, setChatIDs] = useState([]);
 
   // Function to fetch chat IDs from the server
@@ -58,9 +59,18 @@ export default function SideBar(props) {
         <div className="col-span-1 justify-between p-2">
           <AsideUsername userLoginData={userLoginData} />
         </div>
-        <div className="p-2">
+        <div
+          className={`p-2 ${
+            location.pathname === "/home" ? "animate-pulse" : ""
+          }`}
+        >
           {/* new chat */}
-          <NewChat updateChatIDs={chatIDs}></NewChat>
+          <NewChat
+            updateChatIDs={chatIDs}
+            className={
+              location.pathname === "/home" ? "bg-teal-700 border-blue-500" : ""
+            }
+          ></NewChat>
         </div>
         <div className="p-2 h-3/4 overflow-auto">
           {/* Map the chat rows */}

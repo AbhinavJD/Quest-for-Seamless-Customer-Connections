@@ -9,7 +9,7 @@ from passlib.context import CryptContext
 # need to move in env
 SECRET_KEY = "questceadar2024"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # def encode_params_data(params_data):

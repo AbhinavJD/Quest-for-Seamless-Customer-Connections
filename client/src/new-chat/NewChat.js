@@ -45,7 +45,10 @@ export default function NewChat(props) {
       });
   };
   return (
-    <div className="border-gray-700 border chatRow" onClick={createNewChat}>
+    <div
+      className={`border-gray-700 border chatRow text-white ${props.className}`}
+      onClick={createNewChat}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
