@@ -1,30 +1,4 @@
-# import openai
-# # client = OpenAI("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");
-# openai.api_key = "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"
-# # system = [{"role": "assistant",
-# #            "content": "You are chatbot helping an AI Scientist."}]
-# # user = [{"role": "user", "content": "brief introduction?"}]
-# async def get_response_from_openai(prompt):
-#     try:
-#         response = await openai.Completion.create(
-#             model="gpt-3.5-turbo-instruct",  # Specify the chat model
-#             messages=[{"role": "system", "content": "You are a chatbot helping an AI Scientist."},
-#                       {"role": "user", "content": prompt}],  # Include the user's prompt
-#             max_tokens=100,  # Set the maximum number of tokens for the response
-#         )
-#     except Exception as e:
-#         print("Error:", e)
-#         return ""
-#     # try:
-#     #     response = await openai.ChatCompletion.create(
-#     #         model="gpt-3.5-turbo",
-#     #         messages=system + user,
-#     #         stream=False  # Set to True if you want a streaming response
-#     #     )
-#     #     return response.choices[0].delta.content if response.choices else ""
-#     # except Exception as e:
-#     #     print("Error:", e)
-#     #     return ""
+
 import requests
 import json
 import os
