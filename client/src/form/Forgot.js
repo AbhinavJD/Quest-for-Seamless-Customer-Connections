@@ -7,32 +7,21 @@ import { toast } from "react-toastify";
 
 export default function Forgot(props) {
   const navigate = useNavigate();
-  const [forgotForm, setForgotForm] = useState({
-    email: "",
-    password: "",
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const [isFormValid, setIsFormValid] = useState(false);
-  const onChangeForm = (label, event) => {
-    let value = event.target.value;
-
-    setForgotForm((prevForgotForm) => ({
-      ...prevForgotForm,
-      [label]: value,
-    }));
-
-    // Use the updated state directly
-    setIsFormValid((prevIsValid) => {
-      const updatedIsValidForm =
-        (label === "email" ? value !== "" : setForgotForm.email !== "") &&
-        (label === "password" ? value !== "" : setForgotForm.password !== "");
-
-      return updatedIsValidForm;
-    });
-  };
 
   //   submit handler
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+    if (email === "" && password === "") return;
+    const forgotForm = {
+      email: email.trim().toLowerCase(),
+      password: password.trim(),
+    };
+    setEmail("");
+    setPassword("");
     // call api login
     await axios
       .post("http://localhost:80/forgot", forgotForm)
@@ -73,31 +62,31 @@ export default function Forgot(props) {
           <input
             type="email"
             placeholder="Email"
+            value={email}
             className={`block text-sm py-3 px-4 rounded-lg w-full border outline-none focus:ring focus:outline-none focus:ring-sky-400 ${
-              forgotForm.email === "" ? "border-red-500" : ""
+              email === "" ? "border-red-500" : ""
             }`}
-            onChange={(event) => {
-              onChangeForm("email", event);
-            }}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"
             placeholder="New Password"
+            value={password}
             className={`block text-sm py-3 px-4 rounded-lg w-full border outline-none focus:ring focus:outline-none focus:ring-sky-400 ${
-              forgotForm.password === "" ? "border-red-500" : ""
+              password === "" ? "border-red-500" : ""
             }`}
-            onChange={(event) => {
-              onChangeForm("password", event);
-            }}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
         <div className="text-center mt-6">
           <button
             type="submit"
             className={`py-3 w-64 text-xl text-white bg-sky-400 rounded-2xl hover:bg-sky-300 active:bg-sky-500 outline-none ${
-              isFormValid ? "" : "cursor-not-allowed bg-gray-400"
+              email.trim() === "" || password.trim() === ""
+                ? "cursor-not-allowed bg-gray-400"
+                : ""
             }`}
-            disabled={!isFormValid}
+            disabled={email.trim() === "" || password.trim() === ""}
           >
             Update Password
           </button>

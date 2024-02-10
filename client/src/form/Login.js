@@ -35,14 +35,12 @@ export default function Login(props) {
     event.preventDefault();
     // call api login
     const form_data = new FormData();
-    form_data.append("username", loginForm.username);
+    form_data.append("username", loginForm.username.toLowerCase());
     form_data.append("password", loginForm.password);
     await axios
       .post("http://localhost:80/login", form_data)
       .then((response) => {
-        if (response.data.code !== "200") {
-          toast.error(response.data.message);
-        } else if (response.data.code === "200") {
+        if (response.data?.code === "200") {
           toast.success(response.data.message);
           // saving token to local storage
           localStorage.setItem(
@@ -55,18 +53,19 @@ export default function Login(props) {
           );
 
           // move to sign in page
-          navigate("/?home");
+          navigate("/home");
           // reload page
           setTimeout(() => {
             window.location.reload();
           }, 1000);
         } else {
-          toast.success("Something went wrong!");
+          toast.error(response.data.detail);
         }
       })
       .catch((error) => {
         // add error notif
 
+        toast.error("Incorrect Username or Password");
         console.log(error);
       });
   };

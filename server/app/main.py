@@ -10,8 +10,7 @@ from app.controller import create_user, login_user, forgot_password
 from jose import JWTError
 from fastapi.responses import JSONResponse
 from app.firebase import firebase
-
-
+from app.openAIAPI import openapi
 models.Base.metadata.create_all(bind=engine)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 # creating instance for fast api
@@ -132,3 +131,73 @@ async def create_new_chat(user: models.User = Depends(get_current_active_user)):
         return Response(code="500",
                         status="ok",
                         message="Something Went Wrong!").dict(exclude_none=True)
+
+@app.get("/users/allChatID")
+async def get_user_chat_ids(user: models.User = Depends(get_current_active_user)):
+    chat_ids = firebase.get_all_chat_ids(user.email)
+    if chat_ids:
+        return Response(code="200",
+                        status="ok",
+                        message="New Chat Created!",
+                        result={"chatIDs": chat_ids}).dict(exclude_none=True)
+    else:
+        return Response(code="500",
+                        status="ok",
+                        message="No Chat is present!").dict(exclude_none=True)
+
+@app.delete("/users/chat/{chatid}")
+async def get_user_chat_ids(chatid: str, user: models.User = Depends(get_current_active_user)):
+    chat_ids = firebase.delete_chat(chatid, user.email)
+    if chat_ids:
+        return Response(
+            code="200",
+            status="ok",
+            message="Chat deleted successfully"
+        ).dict(exclude_none=True)
+    else:
+        return Response(
+            code="500",
+            status="error",
+            message="Failed to delete chat"
+        ).dict(exclude_none=True)
+
+@app.post("/user/prompt")
+async def save_prompt(prompt_details: dict,  user: models.User = Depends(get_current_active_user), db = Depends(db)):
+
+    # save prompt to firestore
+    messages = firebase.save_prompt(prompt_details, user)
+
+    # Call the open ai api function to get response from open ai
+    openai_response = await openapi.get_response_from_openai(prompt_details["prompt_text"])
+    # Call the async function and await the result
+    prompt = firebase.save_prompt({
+      "prompt_text": openai_response,
+      "chat_id": prompt_details["chat_id"],
+    }, user, isUser=False)
+    print('openai_response--------------------------------', openai_response)
+    if prompt:
+        return Response(
+            code="200",
+            status="ok",
+            message="Bot Working on it..."
+        ).dict(exclude_none=True)
+    else:
+        return Response(
+            code="500",
+            status="error",
+            message="Something is wrong!"
+        ).dict(exclude_none=True)
+
+@app.get("/user/getMessages/{chatid}")
+async def get_user_chat_messages(chatid: str, user: models.User = Depends(get_current_active_user)):
+    messages = firebase.get_all_chat_messages(user.email, chatid)
+    if messages:
+        return Response(code="200",
+                        status="ok",
+                        message="Messages returned!",
+                        result={"messages": messages}).dict(exclude_none=True)
+    else:
+        return Response(code="500",
+                        status="ok",
+                        message="No Message is available",
+                        result={"messages": []}).dict(exclude_none=True)
