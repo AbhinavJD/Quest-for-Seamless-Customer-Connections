@@ -3,6 +3,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { USERS_URL } from "../constants";
 
 export default function NewChat(props) {
   let chatIds = props.updateChatIDs;
@@ -14,7 +15,7 @@ export default function NewChat(props) {
     event.preventDefault();
     // call api login
     await axios
-      .get("http://localhost:80/users/newChat", {
+      .get(USERS_URL + "/users/newChat", {
         headers: {
           Authorization: `${accessTokenType} ${accessToken}`,
         },

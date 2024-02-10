@@ -23,7 +23,7 @@ export default function ChatInput(props) {
       const accessTokenType = localStorage.getItem("quest_auth_token_type");
 
       await axios
-        .post("http://localhost:80/user/prompt", message, {
+        .post("http://52.90.94.236:80/user/prompt", message, {
           headers: {
             Authorization: `${accessTokenType} ${accessToken}`,
           },

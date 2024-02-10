@@ -24,7 +24,7 @@ export default function Forgot(props) {
     setPassword("");
     // call api login
     await axios
-      .post("http://localhost:80/forgot", forgotForm)
+      .post("http://52.90.94.236:80/forgot", forgotForm)
       .then((response) => {
         if (response.data.code !== "200") {
           toast.error(response.data.message);

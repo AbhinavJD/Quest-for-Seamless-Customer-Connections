@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { USERS_URL } from "../constants";
 
 export default function Login(props) {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ export default function Login(props) {
     form_data.append("username", loginForm.username.toLowerCase());
     form_data.append("password", loginForm.password);
     await axios
-      .post("http://localhost:80/login", form_data)
+      .post(USERS_URL + "/login", form_data)
       .then((response) => {
         if (response.data?.code === "200") {
           toast.success(response.data.message);

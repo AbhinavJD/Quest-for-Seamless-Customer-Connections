@@ -6,6 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import ChatRow from "../chatrow/ChatRow";
 import LogoutButton from "../logout/Logout";
+import { USERS_URL } from "../constants";
 
 export default function SideBar(props) {
   const userLoginData = props.userLoginData;
@@ -17,7 +18,7 @@ export default function SideBar(props) {
     const accessToken = localStorage.getItem("quest_auth_token");
     const accessTokenType = localStorage.getItem("quest_auth_token_type");
     await axios
-      .get("http://localhost:80/users/allChatID", {
+      .get(USERS_URL + "/users/allChatID", {
         headers: {
           Authorization: `${accessTokenType} ${accessToken}`,
         },

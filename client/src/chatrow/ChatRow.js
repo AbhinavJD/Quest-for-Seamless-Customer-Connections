@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import axios from "axios";
 import { toast } from "react-toastify";
+import { USERS_URL } from "../constants";
 export default function ChatRow(props) {
   const navigate = useNavigate();
   const pathName = useLocation().pathname;
@@ -22,14 +23,11 @@ export default function ChatRow(props) {
       const accessTokenType = localStorage.getItem("quest_auth_token_type");
 
       // Call the delete_chat API endpoint
-      const response = await axios.delete(
-        `http://localhost:80/users/chat/${id}`,
-        {
-          headers: {
-            Authorization: `${accessTokenType} ${accessToken}`,
-          },
-        }
-      );
+      const response = await axios.delete(USERS_URL + `/users/chat/${id}`, {
+        headers: {
+          Authorization: `${accessTokenType} ${accessToken}`,
+        },
+      });
 
       // Check the response status code
       if (response.status === 200) {

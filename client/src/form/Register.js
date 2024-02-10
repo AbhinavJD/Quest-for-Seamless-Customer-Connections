@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { USERS_URL } from "../constants";
 
 export default function Register(props) {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export default function Register(props) {
 
     // call api login
     await axios
-      .post("http://localhost:80/create", formRegister)
+      .post(USERS_URL + "/create", formRegister)
       .then((response) => {
         if (response.data.code == "200") {
           console.log(response);

@@ -5,6 +5,7 @@ import ChatInput from "../chat-input/ChatInput";
 
 import axios from "axios";
 import { toast } from "react-toastify";
+import { USERS_URL } from "../constants";
 export default function Chats(props) {
   // Get the ID from the URL parameter
   const userLoginData = props.userLoginData;
@@ -16,7 +17,7 @@ export default function Chats(props) {
       const accessTokenType = localStorage.getItem("quest_auth_token_type");
       // console.log(messages);
       await axios
-        .get(`http://localhost:80/user/getMessages/${chatID}`, {
+        .get(USERS_URL + `/user/getMessages/${chatID}`, {
           headers: {
             Authorization: `${accessTokenType} ${accessToken}`,
           },

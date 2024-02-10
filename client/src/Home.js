@@ -5,6 +5,8 @@ import HomeChatWindow from "./home-chat-window/HomeChatWindow";
 import SideBar from "./side-bar/SideBar";
 import { Route, Routes } from "react-router-dom";
 import Chats from "./chats/Chats";
+
+import { USERS_URL } from "./constants";
 export default function Home(props) {
   const navigate = useNavigate();
   const [userLoginData, setUserLoginData] = useState(null);
@@ -14,7 +16,7 @@ export default function Home(props) {
   useEffect(() => {
     // Make the API call when the component mounts
     axios
-      .get("http://localhost:80/users", {
+      .get(USERS_URL + "/users", {
         headers: {
           Authorization: `${accessTokenType} ${accessToken}`,
         },
